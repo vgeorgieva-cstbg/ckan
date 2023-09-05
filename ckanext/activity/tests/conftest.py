@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import pytest
 from pytest_factoryboy import register
 
 from ckan.tests.factories import CKANFactory
@@ -13,3 +14,15 @@ class ActivityFactory(CKANFactory):
     class Meta:
         model = Activity
         action = "activity_create"
+
+
+@pytest.fixture()
+def clean_db(reset_db, migrate_db_for):
+    reset_db()
+    migrate_db_for("activity")
+
+
+@pytest.fixture(scope="session")
+def reset_db_once(reset_db, migrate_db_for):
+    reset_db()
+    migrate_db_for("activity")
